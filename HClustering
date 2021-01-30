@@ -1,0 +1,34 @@
+######h_clustering########
+
+## Load  and prepare the data
+input <- read.csv("EastWestAirlines(1).csv")
+View(input)
+mydata <- input[,(2:12)]
+normalized_data <- scale(mydata)
+
+# View the firt 3 rows
+head(normalized_data, n = 3)
+
+#Distance measures
+d <- dist(normalized_data, method = "euclidean")
+
+fit <- hclust(d, method="complete")
+fit
+
+#plot(fit)
+plot(fit, hang=-1)
+
+groups <- cutree(fit, k=3)
+groups
+
+rect.hclust(fit, k=3, border="red")
+
+membership<-as.matrix(groups)
+membership
+
+final <- data.frame(input, membership)
+final1 <- final[,c(ncol(final),1:(ncol(final)-1))]
+View(final1)
+
+write.csv(final1, file="final.csv")
+getwd()
